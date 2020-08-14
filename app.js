@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const width = 10;
 
-  //Create boards
+  // Create boards
 
   function createBoards(grid, squares) {
     for (let i = 0; i < width * width; i++) {
@@ -32,4 +32,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
   createBoards(userGrid, userSquares);
   createBoards(computerGrid, computerSquares);
+
+  // Ships
+
+  const shipArray = [
+    {
+      name: 'destroyer',
+      directions: [
+        [0, 1],
+        [0, width],
+      ],
+    },
+    {
+      name: 'submarine',
+      directions: [
+        [0, 1, 2],
+        [0, width, width * 2],
+      ],
+    },
+    {
+      name: 'cruiser',
+      directions: [
+        [0, 1, 2],
+        [0, width, width * 2],
+      ],
+    },
+    {
+      name: 'battleship',
+      directions: [
+        [0, 1, 2, 3],
+        [0, width, width * 2, width * 3],
+      ],
+    },
+    {
+      name: 'carrier',
+      directions: [
+        [0, 1, 2, 3, 4],
+        [0, width, width * 2, width * 3, width * 4],
+      ],
+    },
+  ];
+
+  // Draw the computers ships in random positions
+
+  function generateShips(ship) {
+    let randomDirections = Math.floor(
+      Math.random() * ship.directions.length,
+    );
+    let current = ship.directions[randomDirections];
+
+    if (randomDirections === 0) {
+      direction = 1;
+    }
+
+    if (randomDirections === 1) {
+      direction = 10;
+    }
+
+    let randomStart = Math.floor(
+      Math.random() * computerSquares.length -
+        ship.directions[0].length * direction,
+    );
+
+    const isTaken = current.some((index) =>
+      computerSquares[randomStart + index].classList.contains(
+        'taken',
+      ),
+    );
+    const isAtRightEdge = current.some(
+      (index) => (randomStart + index) % width === width - 1,
+    );
+    const isAtLeftEdge = current.some(
+      (index) => (randomStart + index) % width === 0,
+    );
+
+    if (!isTaken && !isAtRightEdge && !isAtLeftEdge) {
+      current.forEach((index) =>
+        computerSquares[randomStart + index].classList.add(
+          'taken',
+          ship.name,
+        ),
+      );
+    } else {
+      generateShips(ship);
+    }
+  }
+
+  generateShips(shipArray[0]);
 });

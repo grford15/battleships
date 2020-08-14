@@ -35,9 +35,13 @@
 .destroyer-container {
   width: 80px;
   height: 40px;
-  background-color: black;
+  background-color: crimson;
   margin: 10px;
   display: flex;
+}
+
+.destroyer {
+  background-color: crimson;
 }
 
 .submarine-container {
