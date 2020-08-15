@@ -118,5 +118,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  generateShips(shipArray[0]);
+  shipArray.forEach((ship) => generateShips(ship));
 });
