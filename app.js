@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rotateButton = document.querySelector('#rotate');
   const turnDisplay = document.querySelector('#whose-go');
   const infoDisplay = document.querySelector('#info');
+  let isHorizontal = true;
 
   const userSquares = [];
   const computerSquares = [];
@@ -90,8 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let randomStart = Math.floor(
-      Math.random() * computerSquares.length -
-        ship.directions[0].length * direction,
+      Math.abs(
+        Math.random() * computerSquares.length -
+          ship.directions[0].length * direction,
+      ),
     );
 
     const isTaken = current.some((index) =>
@@ -119,4 +122,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   shipArray.forEach((ship) => generateShips(ship));
+
+  // Rotate the ships
+
+  function rotate() {
+    if (isHorizontal) {
+      destroyer.classList.toggle('destroyer-container-vertical');
+      submarine.classList.toggle('submarine-container-vertical');
+      cruiser.classList.toggle('cruiser-container-vertical');
+      battleship.classList.toggle('battleship-container-vertical');
+      carrier.classList.toggle('carrier-container-vertical');
+      isHorizontal = false;
+      return;
+    }
+    if (!isHorizontal) {
+      destroyer.classList.toggle('destroyer-container');
+      submarine.classList.toggle('submarine-container');
+      cruiser.classList.toggle('cruiser-container');
+      battleship.classList.toggle('battleship-container');
+      carrier.classList.toggle('carrier-container');
+      isHorizontal = true;
+      return;
+    }
+  }
+
+  rotateButton.addEventListener('click', rotate);
 });
