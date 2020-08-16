@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       battleship.classList.toggle('battleship-container-vertical');
       carrier.classList.toggle('carrier-container-vertical');
       isHorizontal = false;
+      console.log(isHorizontal);
       return;
     }
     if (!isHorizontal) {
@@ -142,9 +143,69 @@ document.addEventListener('DOMContentLoaded', () => {
       battleship.classList.toggle('battleship-container');
       carrier.classList.toggle('carrier-container');
       isHorizontal = true;
+      console.log(isHorizontal);
       return;
     }
   }
 
   rotateButton.addEventListener('click', rotate);
+
+  // Move the ships
+
+  ships.forEach((ship) =>
+    ship.addEventListener('dragstart', dragStart),
+  );
+  userSquares.forEach((ship) =>
+    ship.addEventListener('dragstart', dragStart),
+  );
+  userSquares.forEach((ship) =>
+    ship.addEventListener('dragover', dragOver),
+  );
+  userSquares.forEach((ship) =>
+    ship.addEventListener('dragenter', dragEnter),
+  );
+  userSquares.forEach((ship) =>
+    ship.addEventListener('drop', dragDrop),
+  );
+  userSquares.forEach((ship) =>
+    ship.addEventListener('dragend', dragEnd),
+  );
+
+  let selectedShipNameWithIndex;
+  let draggedShip;
+  let draggedShipLength;
+
+  ships.forEach((ship) =>
+    ship.addEventListener('mousedown', (e) => {
+      selectedShipNameWithIndex = e.target.id;
+    }),
+  );
+
+  function dragStart() {
+    draggedShip = this;
+    draggedShipLength = this.childNodes.length;
+  }
+
+  function dragOver(e) {
+    e.preventDefault();
+  }
+
+  function dragEnter(e) {
+    e.preventDefault();
+  }
+
+  function dragDrop() {
+    let shipNameWithLastId = draggedShip.lastElementChild.id;
+    let shipClass = shipNameWithLastId.slice(0, -2);
+    let lastShipIndex = parseInt(shipNameWithLastId.substr(-1));
+    let shipLastId = lastShipIndex + parseInt(this.dataset.id);
+
+    selectedShipIndex = parseInt(
+      selectedShipNameWithIndex.substr(-1),
+    );
+
+    console.log(selectedShipIndex);
+  }
+
+  function dragEnd() {}
 });
