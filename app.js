@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function dragStart() {
     draggedShip = this;
-    draggedShipLength = this.childNodes.length;
+    draggedShipLength = this.children.length;
   }
 
   function dragOver(e) {
@@ -204,7 +204,23 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedShipNameWithIndex.substr(-1),
     );
 
-    console.log(selectedShipIndex);
+    shipLastId = shipLastId - selectedShipIndex;
+
+    if (isHorizontal) {
+      for (let i = 0; i < draggedShipLength; i++) {
+        userSquares[
+          parseInt(this.dataset.id) - selectedShipIndex + i
+        ].classList.add('taken', shipClass);
+      }
+    } else if (!isHorizontal) {
+      for (let i = 0; i < draggedShipLength; i++) {
+        userSquares[
+          parseInt(this.dataset.id) - (selectedShipIndex + width * i)
+        ].classList.add('taken', shipClass);
+      }
+    }
+
+    displayGrid.removeChild(draggedShip);
   }
 
   function dragEnd() {}
